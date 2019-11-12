@@ -2,6 +2,7 @@ import { tersangkaFulfillment, TERSANGKA } from './fulfillments/2.followup';
 import { daftarSIMFulfillment, DAFTAR_SIM } from './fulfillments/1.simple';
 import { Controller, Post, Get, Body } from '@nestjs/common';
 import { WebhookRequest, WebhookResponse } from 'dialogflow';
+import { TEBAK_TEBAKAN, tebakAngkaFulfillment } from './fulfillments/3.manipulation';
 
 @Controller('fulfillment')
 export class DialogflowController {
@@ -11,6 +12,7 @@ export class DialogflowController {
     constructor() {
         this.fulfillments[DAFTAR_SIM] = daftarSIMFulfillment;
         this.fulfillments[TERSANGKA] = tersangkaFulfillment;
+        this.fulfillments[TEBAK_TEBAKAN] = tebakAngkaFulfillment;
     }
 
     @Get('webhook')
