@@ -1,6 +1,7 @@
 import { WebhookRequest, WebhookResponse } from 'dialogflow';
 
-export const simpleFulfillment = (body: WebhookRequest): WebhookResponse | undefined => {
+export const DAFTAR_SIM = 'Daftar SIM';
+export const daftarSIMFulfillment = (body: WebhookRequest): WebhookResponse | undefined => {
     const age = parseInt(body.queryResult.parameters.usia, 10);
     const response: WebhookResponse = {};
     if (age < 18) {
