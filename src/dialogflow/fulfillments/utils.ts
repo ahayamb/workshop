@@ -39,5 +39,7 @@ interface Nominal {
 export const extractNominal = (value: Nominal): number => {
     if (value.nominal && value.metric) {
         return value.nominal * parseFloat(value.metric);
+    } else if (value.nominal) {
+        return value.nominal;
     }
 };

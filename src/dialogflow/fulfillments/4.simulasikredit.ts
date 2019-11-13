@@ -13,7 +13,10 @@ export const simulasiKreditFulfillment = (body: WebhookRequest): WebhookResponse
         {
             name: 'nominalKredit',
             extractor: ((parameter) => extractNominal(parameter.nominalKredit)),
-            validator: ((val: number, _: any) => (val > 10_000_000 && val < 1_000_000_000)),
+            validator: ((val: number, _: any) => {
+                const result = (val > 10_000_000 && val < 1_000_000_000);
+                return result;
+            }),
         },
         {
             name: 'nominalDP',
@@ -36,6 +39,17 @@ export const simulasiKreditFulfillment = (body: WebhookRequest): WebhookResponse
         response.fulfillmentText = 'Jawaban anda salah\n' + body.queryResult.fulfillmentText;
         eventCtx.parameters.wrongAnswer = false;
         response.outputContexts = [eventCtx];
+    }
+
+    if (body.queryResult.allRequiredParamsPresent) {
+        const nominalKredit = extractNominal(body.queryResult.parameters.nominalKredit);
+        const nominalDP = body.queryResult.parameters.nominalDP;
+        const tenorKredit = parseInt(body.queryResult.parameters.tenorKredit, 0) * 12;
+
+        let pembayaranPerBulan = Math.floor((nominalKredit - nominalDP) / tenorKredit).toLocaleString();
+        pembayaranPerBulan = pembayaranPerBulan.replace(/\./, ',');
+
+        response.fulfillmentText = 'Jadi pembayaran per bulan kamu adalah ' + pembayaranPerBulan;
     }
 
     return response;
