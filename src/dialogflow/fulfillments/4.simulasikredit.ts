@@ -1,6 +1,6 @@
 import { WebhookRequest, WebhookResponse } from 'dialogflow';
 
-import { validateAndResetIfWrong, Field } from './utils';
+import { validateAndResetIfWrong, Field, extractNominal } from './utils';
 
 export const SIMULASI_KREDIT = 'Simulasi Kredit - Filling';
 
@@ -12,14 +12,14 @@ export const simulasiKreditFulfillment = (body: WebhookRequest): WebhookResponse
     const fields: Array<Field<any>> = [
         {
             name: 'nominalKredit',
-            extractor: ((parameter) => parseFloat(parameter.nominalKredit)),
-            validator: ((val: number) => (val > 10_000_000 && val < 1_000_000_000)),
+            extractor: ((parameter) => extractNominal(parameter.nominalKredit)),
+            validator: ((val: number, _: any) => (val > 10_000_000 && val < 1_000_000_000)),
         },
         {
             name: 'nominalDP',
             extractor: ((parameter) => parseFloat(parameter.nominalDP)),
             validator: ((val: number, param: any) => {
-                const loan = parseFloat(param.nominalKredit);
+                const loan = extractNominal(param.nominalKredit);
                 const dp = val;
 
                 return dp / loan > 0.1 && dp / loan < 0.3;

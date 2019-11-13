@@ -30,3 +30,14 @@ export const validateAndResetIfWrong = <T> (body: WebhookRequest, fields: Array<
     }
 
 };
+
+interface Nominal {
+    nominal: number;
+    metric: string;
+}
+
+export const extractNominal = (value: Nominal): number => {
+    if (value.nominal && value.metric) {
+        return value.nominal * parseFloat(value.metric);
+    }
+};
