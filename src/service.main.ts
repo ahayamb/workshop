@@ -46,7 +46,7 @@ export class EarlyTerminationController {
             }
         } else {
             res
-                .status(404)
+                .status(403)
                 .json({message: 'User tidak ditemukan'})
         }
 

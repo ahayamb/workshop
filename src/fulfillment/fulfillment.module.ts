@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule, HttpService } from '@nestjs/common';
 
 import { FulfillmentController } from './fulfillment.controller';
 import { FulfillmentService } from './fulfillment.service';
@@ -15,11 +15,12 @@ import { EarlyTermination } from './intent.handler/early.termination';
                     earlyTermination
                 ];
             },
-            inject: [EarlyTermination],
+            inject: [EarlyTermination, HttpService],
         },
         FulfillmentService,
         EarlyTermination,
     ],
     controllers: [FulfillmentController],
+    imports: [HttpModule]
 })
 export class FulfillmentModule {}
